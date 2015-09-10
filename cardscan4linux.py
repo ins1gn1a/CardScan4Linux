@@ -18,6 +18,7 @@ p.add_argument('-e','--extensions',dest='extensions',help='Input the file extens
 p.add_argument('-max','--max-size',help='Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="maxsize",default="100k")
 p.add_argument('-min','--min-size',help='Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="minsize",default="16c")
 p.add_argument('-mount','--scan-mount',dest='mounted',help='Enable to scan the mounted remote file systems (Default is off.)',required=False,action='store_true')
+p.add_argument('-v','--verbose',dest='verbose',help='Display verbose messages (Warning: output can be huge).',required=False,action='store_true')
 a = p.parse_args()
 
 # String concatenation for file extension searching.
@@ -95,39 +96,42 @@ total_count = 0
 for filepath in full_path_list:
     filepath = filepath.rstrip('\n')
     try:
-            with open(filepath) as file:
-                    total_count += 1
-                    with open('/tmp/cardscan4linux.log', 'w') as log_file:
-                            log_file.write(str(file_lines) + "/" + str(total_count) + "\n")
+        with open(filepath) as file:
+                if a.verbose:
+                        print filepath
+                total_count += 1
+                with open('/tmp/cardscan4linux.log', 'w') as log_file:
+                        log_file.write(str(file_lines) + "/" + str(total_count) + "\n")
 
-                    i = 0
-                    results = []
-                    head = list(islice(file, a.lines)) # Opens 50 lines by default
+                i = 0
+                results = []
+                head = list(islice(file, a.lines)) # Opens 50 lines by default
 
-                    # Loops through each item in list
-                    for item in head:
-                            # Prints if matches AMEX
-                            if re.match(regexAmex, item.rstrip('\n')):
-                                    i += 1
-                                    results.append("\tAMEX:\t\t " + item.rstrip('\n'))
+                # Loops through each item in list
+                for item in head:
+                        # Prints if matches AMEX
+                        if re.match(regexAmex, item.rstrip('\n')):
+                                i += 1
+                                results.append("\tAMEX:\t\t " + item.rstrip('\n'))
 
 
-                            # Prints if matches VISA
-                            elif re.match(regexVisa, item.rstrip('\n')):
-                                    i += 1
-                                    results.append("\tVISA:\t\t " + item.rstrip('\n'))
+                        # Prints if matches VISA
+                        elif re.match(regexVisa, item.rstrip('\n')):
+                                i += 1
+                                results.append("\tVISA:\t\t " + item.rstrip('\n'))
 
-                            # Prints if matches Mastercard
-                            elif re.match(regexMaster, item.rstrip('\n')):
-                                    i += 1
-                                    results.append("\tMASTERCARD:\t " + item.rstrip('\n'))
+                        # Prints if matches Mastercard
+                        elif re.match(regexMaster, item.rstrip('\n')):
+                                i += 1
+                                results.append("\tMASTERCARD:\t " + item.rstrip('\n'))
 
-                    if i > 0:
-                            print ("File: " + filepath)
-                            for result in results:
-                                    print result
-    except KeyboardInterrupt:
-            break
+                if i > 0:
+                        print ("File: " + filepath)
+                        for result in results:
+                                print result
+except KeyboardInterrupt:
+        break
+
 # Removes the temp file
 try:
         os.remove("/tmp/cardscan4linux.log")
