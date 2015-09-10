@@ -22,23 +22,25 @@ a = p.parse_args()
 extCmd = ""
 z = 0
 for ext in a.extensions:
-	if z == 0:
-		extCmd = " -name '*.%s'" %(ext)
-		z += 1
-	else:
-		extCmd = extCmd + (" -o -name '*.%s'" %(ext))
-		z += 1
+        if z == 0:
+                extCmd = " -name '*.%s'" %(ext)
+                z += 1
+        else:
+                extCmd = extCmd + (" -o -name '*.%s'" %(ext))
+                z += 1
 
 # Sizing
 max = ("-size -" + a.maxsize) # Default 100k
 min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
+
+exclude_lines = sum(1 for line in open('/tmp/cardscan4linux.exclude'))
 
 # Exclude files (remote mounted files) that manage to sneak through the find -type f.
 y = 0
 exclCmd = ""
 os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
 with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
-        if exclude_file.read():
+        if exclude_lines > 1:
                 for exclude in exclude_file:
                         if y == 0:
                                 exclCmd = ' -not \( -path "%s"' %(str(exclude.rstrip("\n")))
@@ -46,6 +48,7 @@ with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
                         else:
                                 exclCmd = (exclCmd + (' -path %s' %(str(exclude.rstrip("\n")))))
                 exclCmd = (exclCmd + " \)")
+
 
 # Output to stdout
 print ("===================================")
@@ -79,41 +82,48 @@ with open("/tmp/cardscan4linux.list", "r") as filelist:
     for filepath in filelist:
         filepath = filepath.rstrip('\n')
 
-	with open(filepath) as file:
-		total_count += 1
-		with open('/tmp/cardscan4linux.log', 'w') as log_file:
-			log_file.write(str(file_lines) + "/" + str(total_count) + "\n")
-		
-		i = 0
-		results = []
-		head = list(islice(file, a.lines)) # Opens 50 lines by default
+        with open(filepath) as file:
+                total_count += 1
+                with open('/tmp/cardscan4linux.log', 'w') as log_file:
+                        log_file.write(str(file_lines) + "/" + str(total_count) + "\n")
 
-	        # Loops through each item in list
-		for item in head:
-            		# Prints if matches AMEX
-			if re.match(regexAmex, item.rstrip('\n')):
-				i += 1
-				results.append("\tAMEX: " + item.rstrip('\n'))
+                i = 0
+                results = []
+                head = list(islice(file, a.lines)) # Opens 50 lines by default
+
+                # Loops through each item in list
+                for item in head:
+                        # Prints if matches AMEX
+                        if re.match(regexAmex, item.rstrip('\n')):
+                                i += 1
+                                results.append("\tAMEX: " + item.rstrip('\n'))
 
 
-  		        # Prints if matches VISA
-			elif re.match(regexVisa, item.rstrip('\n')):
-				i += 1
-				results.append("\tVISA: " + item.rstrip('\n'))
+                        # Prints if matches VISA
+                        elif re.match(regexVisa, item.rstrip('\n')):
+                                i += 1
+                                results.append("\tVISA: " + item.rstrip('\n'))
 
-		        # Prints if matches Mastercard
-			elif re.match(regexMaster, item.rstrip('\n')):
-				i += 1
-				results.append("\tMASTERCARD: " + item.rstrip('\n'))
+                        # Prints if matches Mastercard
+                        elif re.match(regexMaster, item.rstrip('\n')):
+                                i += 1
+                                results.append("\tMASTERCARD: " + item.rstrip('\n'))
 
-		if i > 0:
-			print ("File: " + filepath)
-			for result in results:
-				print result
+                if i > 0:
+                        print ("File: " + filepath)
+                        for result in results:
+                                print result
 
 # Removes the temp file
-os.remove("/tmp/cardscan4linux.list")
-os.remove("/tmp/cardscan4linux.log")
+try:
+        os.remove("/tmp/cardscan4linux.list")
+except OSError:
+        pass
+try:
+        os.remove("/tmp/cardscan4linux.log")
+except OSError:
+        pass
+
 
 # End of file
 print ("\n[*] Card scanning complete. " + str(file_lines) + " total files were scanned.")
