@@ -31,7 +31,16 @@ for ext in a.extensions:
 
 # Sizing
 max = ("-size -" + a.maxsize) # Default 100k
-min = ("-size +" + a.minsize) # Default 16 bytes (16 c
+min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
+
+os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
+with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
+	for exclude in exclude_file:
+		exclCmd = exclCmd + " " + str(exclude)
+
+print exclCmd
+
+sys.exit()
 
 # Output to stdout
 print ("===================================")
