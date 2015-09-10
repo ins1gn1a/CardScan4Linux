@@ -35,22 +35,22 @@ max = ("-size -" + a.maxsize) # Default 100k
 min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 
 # Exclude files (remote mounted files) that manage to sneak through the find -type f.
-y = 0
-exclCmd = ""
-exclList = ""
-os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
-exclude_lines = sum(1 for line in open('/tmp/cardscan4linux.exclude'))
-with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
-        if exclude_lines > 1:
-                for exclude in exclude_file:
-                        if y == 0:
-                                exclCmd = ' \( ! -path "%s/*"' %(str(exclude.rstrip("\n")))
-                                exclList = (str(exclude.rstrip("\n")))
-                                y += 1
-                        else:
-                                exclCmd = (exclCmd + (' ! -path "%s/*"' %(str(exclude.rstrip("\n")))))
-                                exclList = exclList + " " + (str(exclude.rstrip("\n")))
-                #exclCmd = (exclCmd + " \)")
+#y = 0
+#exclCmd = ""
+#exclList = ""
+#os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
+#exclude_lines = sum(1 for line in open('/tmp/cardscan4linux.exclude'))
+#with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
+#        if exclude_lines > 1:
+#                for exclude in exclude_file:
+#                        if y == 0:
+#                                exclCmd = ' \( ! -path "%s/*"' %(str(exclude.rstrip("\n")))
+#                                exclList = (str(exclude.rstrip("\n")))
+#                                y += 1
+#                        else:
+#                                exclCmd = (exclCmd + (' -o ! -path "%s/*"' %(str(exclude.rstrip("\n")))))
+#                                exclList = exclList + " " + (str(exclude.rstrip("\n")))
+#                exclCmd = (exclCmd + " \)")
 
 # Output to stdout
 print ("===================================")
@@ -59,17 +59,17 @@ print ("= Min Size: " + str(a.minsize))
 print ("= Extensions: " + str(a.extensions))
 print ("= Lines per file: " + str(a.lines))
 print ("= Depth of search: " + str(a.depth))
-if exclList:
-        print ("= Excluded Paths: " + exclList)
+#if exclList:
+#        print ("= Excluded Paths: " + exclList)
 print ("===================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
 
-# debug print ('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
+print ('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min))
 
 # Create a list of all files with the provided extensions
 # depreccatedos.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
 
-full_path_list = subprocess.check_output('find %s -maxdepth %s -type f \( %s %s %s %s \)' %(a.path,a.depth,extCmd,max,min,exclCmd), shell=True)
+full_path_list = subprocess.check_output('find %s -mount -maxdepth %s -type f \( -name "*.txt"%s \) %s %s ' %(a.path,a.depth,extCmd,max,min), shell=True)
 
 full_path_list = full_path_list.rstrip().split('\n')
 
