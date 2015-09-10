@@ -38,14 +38,14 @@ y = 0
 exclCmd = ""
 os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
 with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
-	for exclude in exclude_file:
-		if y == 0:
-			exclCmd = ' -not \( -path "%s"' %(str(exclude.rstrip("\n")))
-			y += 1
-		else:
-			exclCmd = (exclCmd + (' -path %s' %(str(exclude.rstrip("\n")))))
-	exclCmd = (exclCmd + " \)")
-
+        if exclude_file.read():
+                for exclude in exclude_file:
+                        if y == 0:
+                                exclCmd = ' -not \( -path "%s"' %(str(exclude.rstrip("\n")))
+                                y += 1
+                        else:
+                                exclCmd = (exclCmd + (' -path %s' %(str(exclude.rstrip("\n")))))
+                exclCmd = (exclCmd + " \)")
 
 # Output to stdout
 print ("===================================")
