@@ -132,7 +132,7 @@ try:
                 except KeyboardInterrupt:
                         break
 except:
-        sys.exit("There are no files that match the search.")
+        sys.exit("\r[*] There are no files that match the search.")
         
 # Removes the temp file
 try:
