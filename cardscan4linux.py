@@ -11,7 +11,8 @@ from itertools import islice
 # Input argument setup
 p = argparse.ArgumentParser(description='Search Linux-based systems for Credit/Debiit Card numbers.')
 # Will be added soon #p.add_argument('-o','--output',dest='output',help='Path to output data instead of stdout.')
-p.add_argument('-d','--depth',dest='depth',help='Enter the max depth that the scanner will go to from the root "/" directory (Default is 3).',type=int,default=3)
+p.add_argument('-d','--depth',dest='depth',help='Enter the max depth that the scanner will search from the given directory (Default is 3).',type=int,default=3)
+p.add_argument('-D','--min-depth',dest='mindepth',help='Enter the min depth that the scanner will search from the given directory (No Default).',type=int)
 p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines to cycle through (Default is 50)',type=int,default=50)
 p.add_argument('-p','--path',help='Input the root-file path that you want to recursively search through, e.g. /var (Default is /)',default='/')
 p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched for.',required=True,nargs='+')
@@ -72,8 +73,14 @@ if a.mounted:
 else:
     remote_mount = "-mount "
 
+# Min depth
+if a.mindepth is None:
+    min_depth = ""
+else:
+    min_depth = "-mindepth %s" %(str(a.mindepth))
+
 # Create a list of all files with the provided extensions
-full_path_list = subprocess.check_output('find %s %s-maxdepth %s -type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,extCmd,max,min), shell=True)
+full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,max,min), shell=True)
 full_path_list = full_path_list.rstrip().split('\n')
 
 # Count how many entries in the list file
