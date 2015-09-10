@@ -3,6 +3,7 @@
 # Modules
 import re
 import os
+import sys
 import argparse
 from itertools import islice
 
@@ -13,15 +14,23 @@ p = argparse.ArgumentParser(description='Search Linux-based systems for Credit/D
 p.add_argument('-d','--depth',dest='depth',help='Enter the max depth that the scanner will go to from the root "/" directory (Default is 3).',type=int,default=3)
 p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines to cycle through (Default is 50)',type=int,default=50)
 p.add_argument('-p','--path',help='Input the root-file path that you want to recursively search through, e.g. /var (Default is /)',default='/')
-p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched (Default is txt).',default="txt",nargs='+')
+p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched (Default is txt).',required=True,nargs='+')
 a = p.parse_args()
 
+
+# String concatenation for file extension searching.
 extCmd = ""
+i = 0
 for ext in a.extensions:
-	extCmd = extCmd + (" -o -name '*.%s'" %(ext))
+	if i == 0:
+		extCmd = " -name '*.%s'" %(ext)
+		i += 1
+	else:
+		extCmd = extCmd + (" -o -name '*.%s'" %(ext))
+		i += 1
 
 # Create a list of all files with the provided extensions
-os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) > /tmp/file.list' %(a.path,a.depth,extCmd))
+os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd))
 
 # Regex to filter card numbers
 regexAmex = re.compile("([^0-9-]|^)(3(4[0-9]{2}|7[0-9]{2})( |-|)[0-9]{6}( |-|)[0-9]{5})([^0-9-]|$)") #16 Digit AMEX
@@ -29,18 +38,16 @@ regexVisa = re.compile("([^0-9-]|^)(4[0-9]{3}( |-|)([0-9]{4})( |-|)([0-9]{4})( |
 regexMaster = re.compile("([^0-9-]|^)(5[0-9]{3}( |-|)([0-9]{4})( |-|)([0-9]{4})( |-|)([0-9]{4}))([^0-9-]|$)")
 
 # Search through files in the list
-with open("/tmp/file.list", "r") as filelist:
+with open("/tmp/cardscan4linux.list", "r") as filelist:
     for filepath in filelist:
         filepath = filepath.rstrip('\n')
 
 	with open(filepath) as file:
 		i = 0
 		results = []
-		head = list(islice(file, a.lines)) # Opens 50 lines
-		# Print file-path
-#		print ("File: " + filepath)
+		head = list(islice(file, a.lines)) # Opens 50 lines by default
 
-        # Loops through each item in list
+	        # Loops through each item in list
 		for item in head:
             		# Prints if matches AMEX
 			if re.match(regexAmex, item.rstrip('\n')):
@@ -62,4 +69,6 @@ with open("/tmp/file.list", "r") as filelist:
 			print ("File: " + filepath)
 			for result in results:
 				print result
-os.remove("/tmp/file.list")
+
+# Removes the temp file
+os.remove("/tmp/cardscan4linux.list")
