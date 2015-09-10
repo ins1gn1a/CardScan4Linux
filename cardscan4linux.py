@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # Modules
+import timeit
 import re
 import os
 import sys
@@ -66,7 +67,7 @@ print ("[ Depth of search ] \t" + str(a.depth))
 print ("[ Scan Mounted Dirs ] \t" + str(a.mounted))
 print ("=========================================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
-
+start_time = timeit.default_timer()
 # Local or Remote Mounting
 if a.mounted:
     remote_mount = ""
@@ -154,8 +155,8 @@ try:
 except OSError:
         pass
 
-
+total_time = int(timeit.default_timer()) - int(start_time)
 # End of file
-print ("[*] Card scanning complete. " + str(file_lines) + " total files were scanned.")
+print ("[*] Card scanning complete. " + str(file_lines) + " total files were scanned in " + str(total_time) + " seconds.")
 if a.output:
 	print ("[*] Output saved to " + (os.path.dirname(os.path.realpath(__file__))) + "/cardscan.output.")
