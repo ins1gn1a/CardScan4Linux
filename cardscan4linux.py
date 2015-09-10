@@ -33,22 +33,23 @@ for ext in a.extensions:
 max = ("-size -" + a.maxsize) # Default 100k
 min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 
-exclude_lines = sum(1 for line in open('/tmp/cardscan4linux.exclude'))
-
 # Exclude files (remote mounted files) that manage to sneak through the find -type f.
 y = 0
 exclCmd = ""
+exclList = ""
 os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
+exclude_lines = sum(1 for line in open('/tmp/cardscan4linux.exclude'))
 with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
         if exclude_lines > 1:
                 for exclude in exclude_file:
                         if y == 0:
                                 exclCmd = ' -not \( -path "%s/*"' %(str(exclude.rstrip("\n")))
+                                exclList = (str(exclude.rstrip("\n")))
                                 y += 1
                         else:
                                 exclCmd = (exclCmd + (' -o -path "%s/*"' %(str(exclude.rstrip("\n")))))
+                                exclList = exclList + (str(exclude.rstrip("\n")))
                 exclCmd = (exclCmd + " \)")
-
 
 # Output to stdout
 print ("===================================")
@@ -57,6 +58,8 @@ print ("= Min Size: " + str(a.minsize))
 print ("= Extensions: " + str(a.extensions))
 print ("= Lines per file: " + str(a.lines))
 print ("= Depth of search: " + str(a.depth))
+if exclList:
+        print ("= Excluded Paths: " + exclList)
 print ("===================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
 
