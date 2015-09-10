@@ -21,14 +21,14 @@ a = p.parse_args()
 
 # String concatenation for file extension searching.
 extCmd = ""
-i = 0
+z = 0
 for ext in a.extensions:
-	if i == 0:
+	if z == 0:
 		extCmd = " -name '*.%s'" %(ext)
-		i += 1
+		z += 1
 	else:
 		extCmd = extCmd + (" -o -name '*.%s'" %(ext))
-		i += 1
+		z += 1
 
 # Sizing
 max = ("-size -" + a.maxsize) # Default 100k
