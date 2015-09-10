@@ -1,11 +1,10 @@
 # CardScan4Linux
-Use this script to search through locally stored files for any Credit/Debit card details.
+This script can be used to locally search through stored files for any Credit/Debit card details. It is portable and requires no additional Python (built with 2.7 in mind) libraries to operate.
 
-# Help
-## Usage 
+## Basic Usage 
 `cardscan4linux.py [-h] [-d DEPTH] [-l LINES] [-p PATH] -e EXTENSIONS [EXTENSIONS ...] [-max MAXSIZE] [-min MINSIZE]`
 
-##optional arguments:
+## Optional Arguments:
 * `-h, --help` Show this help message and exit
 * `-o, --output` Output data to a file instead of the Terminal.
 * `-d DEPTH, --max-depth DEPTH` Enter the max depth that the scanner will go to from the root "/" directory (Default is 3).
@@ -46,3 +45,8 @@ Use this script to search through locally stored files for any Credit/Debit card
 
 `[*] Card scanning complete. 24855 total files were scanned in 8 seconds.`
 
+# To do
+
+* Implement remote scanning
+* Create some sort of progress bar for the 'find' subprocess
+* Party
