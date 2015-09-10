@@ -33,14 +33,19 @@ for ext in a.extensions:
 max = ("-size -" + a.maxsize) # Default 100k
 min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 
+# Exclude files (remote mounted files) that manage to sneak through the find -type f.
+y = 0
+exclCmd = ""
 os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
 with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
 	for exclude in exclude_file:
-		exclCmd = exclCmd + " " + str(exclude)
+		if y == 0:
+			exclCmd = ' -not \( -path "%s"' %(str(exclude.rstrip("\n")))
+			y += 1
+		else:
+			exclCmd = (exclCmd + (' -path %s' %(str(exclude.rstrip("\n")))))
+	exclCmd = (exclCmd + " \)")
 
-print exclCmd
-
-sys.exit()
 
 # Output to stdout
 print ("===================================")
@@ -53,7 +58,7 @@ print ("===================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
 
 # Create a list of all files with the provided extensions
-os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min))
+os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
 
 # Count how many entries in the list file
 file_lines = sum(1 for count_lines in open('/tmp/cardscan4linux.list'))
