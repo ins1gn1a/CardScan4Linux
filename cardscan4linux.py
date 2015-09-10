@@ -68,7 +68,9 @@ print ("\n[*] Starting file-system scan. This may take a while...")
 
 # Create a list of all files with the provided extensions
 # depreccatedos.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
+
 full_path_list = subprocess.check_output('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s ' %(a.path,a.depth,extCmd,max,min,exclCmd), shell=True)
+
 full_path_list = full_path_list.rstrip().split('\n')
 
 # Count how many entries in the list file
@@ -95,29 +97,29 @@ for filepath in full_path_list:
                     total_count += 1
                     with open('/tmp/cardscan4linux.log', 'w') as log_file:
                             log_file.write(str(file_lines) + "/" + str(total_count) + "\n")
-    
+
                     i = 0
                     results = []
                     head = list(islice(file, a.lines)) # Opens 50 lines by default
-    
+
                     # Loops through each item in list
                     for item in head:
                             # Prints if matches AMEX
                             if re.match(regexAmex, item.rstrip('\n')):
                                     i += 1
-                                    results.append("\tAMEX: " + item.rstrip('\n'))
-    
-    
+                                    results.append("\tAMEX:\t\t " + item.rstrip('\n'))
+
+
                             # Prints if matches VISA
                             elif re.match(regexVisa, item.rstrip('\n')):
                                     i += 1
-                                    results.append("\tVISA: " + item.rstrip('\n'))
-    
+                                    results.append("\tVISA:\t\t " + item.rstrip('\n'))
+
                             # Prints if matches Mastercard
                             elif re.match(regexMaster, item.rstrip('\n')):
                                     i += 1
-                                    results.append("\tMASTERCARD: " + item.rstrip('\n'))
-    
+                                    results.append("\tMASTERCARD:\t " + item.rstrip('\n'))
+
                     if i > 0:
                             print ("File: " + filepath)
                             for result in results:
