@@ -10,7 +10,7 @@ from itertools import islice
 
 # Input argument setup
 p = argparse.ArgumentParser(description='Search Linux-based systems for Credit/Debiit Card numbers.')
-# Will be added soon #p.add_argument('-o','--output',dest='output',help='Path to output data instead of stdout.')
+p.add_argument('-o','--output',dest='output',help='Output data to a file instead of the Terminal.',action='store_true')
 p.add_argument('-D','--max-depth',dest='depth',help='Enter the max depth that the scanner will search from the given directory (Default is 3).',type=int,default=3)
 p.add_argument('-d','--min-depth',dest='mindepth',help='Enter the min depth that the scanner will search from the given directory (No Default).',type=int)
 p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines to cycle through (Default is 50)',type=int,default=50)
@@ -88,7 +88,7 @@ full_path_list = full_path_list.rstrip().split('\n')
 file_lines = len(full_path_list)
 
 # Output to user
-print ("[*] File-system search complete. " + str(file_lines) + " files to check for card-data.\n")
+print ("[*] File-system search complete. " + str(file_lines) + " files to check for card-data.")
 
 # Regex to filter card numbers
 regexAmex = re.compile("([^0-9-]|^)(3(4[0-9]{2}|7[0-9]{2})( |-|)[0-9]{6}( |-|)[0-9]{5})([^0-9-]|$)") #16 Digit AMEX
@@ -133,9 +133,16 @@ try:
                                                 results.append("\tMASTERCARD:\t " + item.rstrip('\n'))
                 
                                 if i > 0:
-                                        print ("File: " + filepath)
-                                        for result in results:
-                                                print result
+					if a.output:
+						with open('cardscan.output', "a") as outfile:
+							outfile.write("File: " + filepath + "\n")
+							for result in results:
+								outfile.write(result + "\n")
+					else:
+                                        	print ("File: " + filepath)
+                                        	for result in results:
+                                        	        print result
+						
                 except KeyboardInterrupt:
                         break
 except:
@@ -150,3 +157,5 @@ except OSError:
 
 # End of file
 print ("[*] Card scanning complete. " + str(file_lines) + " total files were scanned.")
+if a.output:
+	print ("[*] Output saved to " + (os.path.dirname(os.path.realpath(__file__))) + "/cardscan.output.")
