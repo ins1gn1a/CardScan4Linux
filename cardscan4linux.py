@@ -15,8 +15,9 @@ p.add_argument('-d','--depth',dest='depth',help='Enter the max depth that the sc
 p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines to cycle through (Default is 50)',type=int,default=50)
 p.add_argument('-p','--path',help='Input the root-file path that you want to recursively search through, e.g. /var (Default is /)',default='/')
 p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched (Default is txt).',required=True,nargs='+')
+p.add_argument('-max','--max-size',help='Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="maxsize",default="100k")
+p.add_argument('-min','--min-size',help='Enter the minimum file-size to search for (Default 100 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="minsize",default="100c")
 a = p.parse_args()
-
 
 # String concatenation for file extension searching.
 extCmd = ""
@@ -29,8 +30,12 @@ for ext in a.extensions:
 		extCmd = extCmd + (" -o -name '*.%s'" %(ext))
 		i += 1
 
+# Sizing
+max = ("-size -" + a.maxsize) # Default 100k
+min = ("-size +" + a.minsize) # Default 1k
+
 # Create a list of all files with the provided extensions
-os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd))
+os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min))
 
 # Regex to filter card numbers
 regexAmex = re.compile("([^0-9-]|^)(3(4[0-9]{2}|7[0-9]{2})( |-|)[0-9]{6}( |-|)[0-9]{5})([^0-9-]|$)") #16 Digit AMEX
