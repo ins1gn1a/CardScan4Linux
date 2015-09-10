@@ -63,6 +63,8 @@ if exclList:
 print ("===================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
 
+print ('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
+sys.exit()
 # Create a list of all files with the provided extensions
 os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
 
