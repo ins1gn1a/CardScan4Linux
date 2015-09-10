@@ -59,18 +59,11 @@ print ("= Min Size: " + str(a.minsize))
 print ("= Extensions: " + str(a.extensions))
 print ("= Lines per file: " + str(a.lines))
 print ("= Depth of search: " + str(a.depth))
-#if exclList:
-#        print ("= Excluded Paths: " + exclList)
 print ("===================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
 
-print ('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min))
-
 # Create a list of all files with the provided extensions
-# depreccatedos.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
-
-full_path_list = subprocess.check_output('find %s -mount -maxdepth %s -type f \( -name "*.txt"%s \) %s %s ' %(a.path,a.depth,extCmd,max,min), shell=True)
-
+full_path_list = subprocess.check_output('find %s -mount -maxdepth %s -type f \( %s \) %s %s ' %(a.path,a.depth,extCmd,max,min), shell=True)
 full_path_list = full_path_list.rstrip().split('\n')
 
 # Count how many entries in the list file
@@ -128,14 +121,10 @@ for filepath in full_path_list:
             break
 # Removes the temp file
 try:
-        os.remove("/tmp/cardscan4linux.list")
-except OSError:
-        pass
-try:
         os.remove("/tmp/cardscan4linux.log")
 except OSError:
         pass
 
 
 # End of file
-print ("\n[*] Card scanning complete. " + str(file_lines) + " total files were scanned.")
+print ("[*] Card scanning complete. " + str(file_lines) + " total files were scanned.")
