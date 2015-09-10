@@ -140,7 +140,7 @@ try:
 							for result in results:
 								outfile.write(result + "\n")
 					else:
-                                        	print ("File: " + filepath)
+                                        	print ("\nFile: " + filepath)
                                         	for result in results:
                                         	        print result
 						
