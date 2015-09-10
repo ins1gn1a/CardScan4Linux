@@ -90,6 +90,7 @@ with open("/tmp/cardscan4linux.list", "r") as filelist:
 
 # Removes the temp file
 os.remove("/tmp/cardscan4linux.list")
+os.remove("/tmp/cardscan4linux.log")
 
 # End of file
 print ("\nCard scanning complete. " + str(file_lines) + " total files scanned.\n")
