@@ -9,14 +9,13 @@ from itertools import islice
 
 # Input argument setup
 p = argparse.ArgumentParser(description='Search Linux-based systems for Credit/Debiit Card numbers.')
-# Will be added soon #p.add_argument('-f','--file',dest='filepath',help='Enter the file-path to search through.')
 # Will be added soon #p.add_argument('-o','--output',dest='output',help='Path to output data instead of stdout.')
 p.add_argument('-d','--depth',dest='depth',help='Enter the max depth that the scanner will go to from the root "/" directory (Default is 3).',type=int,default=3)
 p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines to cycle through (Default is 50)',type=int,default=50)
 p.add_argument('-p','--path',help='Input the root-file path that you want to recursively search through, e.g. /var (Default is /)',default='/')
 p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched for.',required=True,nargs='+')
 p.add_argument('-max','--max-size',help='Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="maxsize",default="100k")
-p.add_argument('-min','--min-size',help='Enter the minimum file-size to search for (Default 100 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="minsize",default="100c")
+p.add_argument('-min','--min-size',help='Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="minsize",default="16c")
 a = p.parse_args()
 
 # String concatenation for file extension searching.
@@ -32,9 +31,16 @@ for ext in a.extensions:
 
 # Sizing
 max = ("-size -" + a.maxsize) # Default 100k
-min = ("-size +" + a.minsize) # Default 1k
+min = ("-size +" + a.minsize) # Default 16 bytes (16 c
 
 # Output to stdout
+print ("===================================")
+print ("= Max Size: " + str(a.maxsize))
+print ("= Min Size: " + str(a.minsize))
+print ("= Extensions: " + str(a.extensions))
+print ("= Lines per file: " + str(a.lines))
+print ("= Depth of search: " + str(a.depth))
+print ("===================================")
 print ("Starting file-system scan. This may take a while...")
 
 # Create a list of all files with the provided extensions
