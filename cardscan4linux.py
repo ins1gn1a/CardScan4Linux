@@ -47,7 +47,7 @@ with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
                                 exclList = (str(exclude.rstrip("\n")))
                                 y += 1
                         else:
-                                exclCmd = (exclCmd + (' ! -o -path "%s/*"' %(str(exclude.rstrip("\n")))))
+                                exclCmd = (exclCmd + (' -o ! -path "%s/*"' %(str(exclude.rstrip("\n")))))
                                 exclList = exclList + " " + (str(exclude.rstrip("\n")))
                 exclCmd = (exclCmd + " \)")
 
@@ -64,7 +64,7 @@ print ("===================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
 
 print ('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
-sys.exit()
+
 # Create a list of all files with the provided extensions
 os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
 
