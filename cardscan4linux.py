@@ -17,6 +17,7 @@ p.add_argument('-p','--path',help='Input the root-file path that you want to rec
 p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched for.',required=True,nargs='+')
 p.add_argument('-max','--max-size',help='Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="maxsize",default="100k")
 p.add_argument('-min','--min-size',help='Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="minsize",default="16c")
+p.add_argument('-mount','--scan-mount',dest='mounted',help='Enable to scan the mounted remote file systems (Default is off.)',required=False,action='store_true')
 a = p.parse_args()
 
 # String concatenation for file extension searching.
@@ -53,17 +54,24 @@ min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 #                exclCmd = (exclCmd + " \)")
 
 # Output to stdout
-print ("===================================")
-print ("= Max Size: " + str(a.maxsize))
-print ("= Min Size: " + str(a.minsize))
-print ("= Extensions: " + str(a.extensions))
-print ("= Lines per file: " + str(a.lines))
-print ("= Depth of search: " + str(a.depth))
-print ("===================================")
+print ("=========================================================")
+print ("[ Max Size ] \t\t" + str(a.maxsize))
+print ("[ Min Size ] \t\t" + str(a.minsize))
+print ("[ Extensions ] \t\t" + str(a.extensions))
+print ("[ Lines per file ] \t" + str(a.lines))
+print ("[ Depth of search ] \t" + str(a.depth))
+print ("[ Scan Mounted Dirs ] \t" + str(a.mounted))
+print ("=========================================================")
 print ("\n[*] Starting file-system scan. This may take a while...")
 
+# Local or Remote Mounting
+if a.mounted:
+    remote_mount = ""
+else:
+    remote_mount = "-mount "
+
 # Create a list of all files with the provided extensions
-full_path_list = subprocess.check_output('find %s -mount -maxdepth %s -type f \( %s \) %s %s ' %(a.path,a.depth,extCmd,max,min), shell=True)
+full_path_list = subprocess.check_output('find %s %s-maxdepth %s -type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,extCmd,max,min), shell=True)
 full_path_list = full_path_list.rstrip().split('\n')
 
 # Count how many entries in the list file
