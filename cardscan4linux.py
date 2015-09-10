@@ -48,7 +48,7 @@ with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
                                 y += 1
                         else:
                                 exclCmd = (exclCmd + (' -o -path "%s/*"' %(str(exclude.rstrip("\n")))))
-                                exclList = exclList + (str(exclude.rstrip("\n")))
+                                exclList = exclList + " " + (str(exclude.rstrip("\n")))
                 exclCmd = (exclCmd + " \)")
 
 # Output to stdout
