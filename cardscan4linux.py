@@ -41,7 +41,7 @@ os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s > /tmp/cards
 file_lines = sum(1 for count_lines in open('/tmp/cardscan4linux.list'))
 
 # Output to user
-print ("File-system search complete. " + str(file_lines) + " files to check.\n")
+print ("File-system search complete. " + str(file_lines) + " files to check for card-data.")
 
 # Regex to filter card numbers
 regexAmex = re.compile("([^0-9-]|^)(3(4[0-9]{2}|7[0-9]{2})( |-|)[0-9]{6}( |-|)[0-9]{5})([^0-9-]|$)") #16 Digit AMEX
@@ -93,4 +93,4 @@ os.remove("/tmp/cardscan4linux.list")
 os.remove("/tmp/cardscan4linux.log")
 
 # End of file
-print ("\nCard scanning complete. " + str(file_lines) + " total files scanned.\n")
+print ("\nCard scanning complete. " + str(file_lines) + " total files were scanned.")
