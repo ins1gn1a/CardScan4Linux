@@ -43,10 +43,10 @@ with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
         if exclude_lines > 1:
                 for exclude in exclude_file:
                         if y == 0:
-                                exclCmd = ' -not \( -path "%s"' %(str(exclude.rstrip("\n")))
+                                exclCmd = ' -not \( -path "%s/*"' %(str(exclude.rstrip("\n")))
                                 y += 1
                         else:
-                                exclCmd = (exclCmd + (' -path %s' %(str(exclude.rstrip("\n")))))
+                                exclCmd = (exclCmd + (' -o -path "%s/*"' %(str(exclude.rstrip("\n")))))
                 exclCmd = (exclCmd + " \)")
 
 
