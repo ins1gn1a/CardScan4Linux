@@ -47,15 +47,18 @@ regexAmex = re.compile("([^0-9-]|^)(3(4[0-9]{2}|7[0-9]{2})( |-|)[0-9]{6}( |-|)[0
 regexVisa = re.compile("([^0-9-]|^)(4[0-9]{3}( |-|)([0-9]{4})( |-|)([0-9]{4})( |-|)([0-9]{4}))([^0-9-]|$)")
 regexMaster = re.compile("([^0-9-]|^)(5[0-9]{3}( |-|)([0-9]{4})( |-|)([0-9]{4})( |-|)([0-9]{4}))([^0-9-]|$)")
 
+# Log file - counting
+total_count = 0
+
 # Search through files in the list
 with open("/tmp/cardscan4linux.list", "r") as filelist:
     for filepath in filelist:
         filepath = filepath.rstrip('\n')
 
 	with open(filepath) as file:
-		
+		total_count += 1
 		with open('/tmp/cardscan4linux.log', 'w') as log_file:
-			log_file.write()
+			log_file.write(str(file_lines) + "/" + str(total_count) + "\n")
 		
 		i = 0
 		results = []
