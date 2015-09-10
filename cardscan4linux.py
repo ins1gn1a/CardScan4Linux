@@ -33,7 +33,7 @@ for ext in a.extensions:
                 z += 1
 
 # Sizing
-max = ("-size -" + a.maxsize) # Default 100k
+max = ("-size -" + a.maxsize) # Default 100 Kilobytes (100k)
 min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 
 # Exclude files (remote mounted files) that manage to sneak through the find -type f.
@@ -92,8 +92,7 @@ regexMaster = re.compile("([^0-9-]|^)(5[0-9]{3}( |-|)([0-9]{4})( |-|)([0-9]{4})(
 total_count = 0
 
 # Search through files in the list
-#with open("/tmp/cardscan4linux.list", "r") as filelist:
-if (len(full_path_list) > 0):
+try:
         for filepath in full_path_list:
                 filepath = filepath.rstrip('\n')
                 try:
@@ -132,7 +131,9 @@ if (len(full_path_list) > 0):
                                                 print result
                 except KeyboardInterrupt:
                         break
-                
+except:
+        sys.exit("There are no files that match the search.")
+        
 # Removes the temp file
 try:
         os.remove("/tmp/cardscan4linux.log")
