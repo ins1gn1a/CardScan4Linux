@@ -11,8 +11,8 @@ from itertools import islice
 # Input argument setup
 p = argparse.ArgumentParser(description='Search Linux-based systems for Credit/Debiit Card numbers.')
 # Will be added soon #p.add_argument('-o','--output',dest='output',help='Path to output data instead of stdout.')
-p.add_argument('-d','--depth',dest='depth',help='Enter the max depth that the scanner will search from the given directory (Default is 3).',type=int,default=3)
-p.add_argument('-D','--min-depth',dest='mindepth',help='Enter the min depth that the scanner will search from the given directory (No Default).',type=int)
+p.add_argument('-D','--max-depth',dest='depth',help='Enter the max depth that the scanner will search from the given directory (Default is 3).',type=int,default=3)
+p.add_argument('-d','--min-depth',dest='mindepth',help='Enter the min depth that the scanner will search from the given directory (No Default).',type=int)
 p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines to cycle through (Default is 50)',type=int,default=50)
 p.add_argument('-p','--path',help='Input the root-file path that you want to recursively search through, e.g. /var (Default is /)',default='/')
 p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched for.',required=True,nargs='+')
