@@ -34,6 +34,9 @@ for ext in a.extensions:
 max = ("-size -" + a.maxsize) # Default 100k
 min = ("-size +" + a.minsize) # Default 1k
 
+# Output to stdout
+print ("Starting file-system scan. This may take a while...")
+
 # Create a list of all files with the provided extensions
 os.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min))
 
