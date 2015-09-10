@@ -55,6 +55,7 @@ min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 
 # Output to stdout
 print ("=========================================================")
+print ("[ Root Path ] \t\t" + str(a.path))
 print ("[ Max Size ] \t\t" + str(a.maxsize))
 print ("[ Min Size ] \t\t" + str(a.minsize))
 print ("[ Extensions ] \t\t" + str(a.extensions))
