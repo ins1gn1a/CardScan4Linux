@@ -48,9 +48,9 @@ with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
                                 exclList = (str(exclude.rstrip("\n")))
                                 y += 1
                         else:
-                                exclCmd = (exclCmd + (' -o ! -path "%s/*"' %(str(exclude.rstrip("\n")))))
+                                exclCmd = (exclCmd + (' ! -path "%s/*"' %(str(exclude.rstrip("\n")))))
                                 exclList = exclList + " " + (str(exclude.rstrip("\n")))
-                exclCmd = (exclCmd + " \)")
+                #exclCmd = (exclCmd + " \)")
 
 # Output to stdout
 print ("===================================")
@@ -69,7 +69,7 @@ print ("\n[*] Starting file-system scan. This may take a while...")
 # Create a list of all files with the provided extensions
 # depreccatedos.system('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s > /tmp/cardscan4linux.list' %(a.path,a.depth,extCmd,max,min,exclCmd))
 
-full_path_list = subprocess.check_output('find %s -maxdepth %s -type f \( -name "*.txt"%s \) %s %s %s ' %(a.path,a.depth,extCmd,max,min,exclCmd), shell=True)
+full_path_list = subprocess.check_output('find %s -maxdepth %s -type f \( %s %s %s %s \)' %(a.path,a.depth,extCmd,max,min,exclCmd), shell=True)
 
 full_path_list = full_path_list.rstrip().split('\n')
 
