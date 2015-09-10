@@ -77,7 +77,7 @@ else:
 if a.mindepth is None:
     min_depth = ""
 else:
-    min_depth = "-mindepth %s" %(str(a.mindepth))
+    min_depth = "-mindepth %s " %(str(a.mindepth))
 
 # Create a list of all files with the provided extensions
 full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,max,min), shell=True)
