@@ -104,7 +104,6 @@ if a.mindepth is None:
 else:
     min_depth = "-mindepth %s " %(str(a.mindepth))
 	
-print ('find %s %s-maxdepth %s %s-type f \( %s %s\) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,exclude_cmd,max,min))
 # Create a list of all files with the provided inputs
 try:
         full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s %s\) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,exclude_cmd,max,min), shell=True)
