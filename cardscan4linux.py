@@ -21,13 +21,13 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 # Input argument setup
-p = argparse.ArgumentParser(description='Search Linux-based systems for Credit/Debiit Card numbers.')
+p = argparse.ArgumentParser(description='Search Linux-based systems for payment card numbers (VISA, AMEX, Mastercard).')
 p.add_argument('-o','--output',dest='output',help='Output data to a file instead of the Terminal.',action='store_true')
 p.add_argument('-D','--max-depth',dest='depth',help='Enter the max depth that the scanner will search from the given directory (Default is 3).',type=int,default=3)
 p.add_argument('-d','--min-depth',dest='mindepth',help='Enter the min depth that the scanner will search from the given directory (No Default).',type=int)
-p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines to cycle through (Default is 50)',type=int,default=50)
-p.add_argument('-p','--path',help='Input the root-file path that you want to recursively search through, e.g. /var (Default is /)',default='/')
-p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched for.',required=True,nargs='+')
+p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines from the file to cycle through (Default is 50)',type=int,default=50)
+p.add_argument('-p','--path',help='Input the directory path that you want to recursively search through, e.g. /var (Default is /)',default='/')
+p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched for, separated by spaces.',required=True,nargs='+')
 p.add_argument('-max','--max-size',help='Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="maxsize",default="100k")
 p.add_argument('-min','--min-size',help='Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="minsize",default="16c")
 p.add_argument('-mount','--scan-mount',dest='mounted',help='Enable to scan the mounted remote file systems (Default is off.)',required=False,action='store_true')
