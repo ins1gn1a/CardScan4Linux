@@ -16,18 +16,18 @@ It is possible to exclude certain directories from being scanned by using the `-
 Note: It is not neccessary to include wildcards, however if you are using a child-directory as the exclusions then the wildcards will be necessary either side of the forward slashes.
 
 ## Optional Arguments:
-  `-h, --help`          Show this help message and exit
-  `-o, --output `       Output data to a file instead of the Terminal.
-  `-D DEPTH, --max-depth DEPTH` Enter the max depth that the scanner will search from the given directory (Default is 3).
-  `-d MINDEPTH, --min-depth MINDEPTH` Enter the min depth that the scanner will search from the given directory (No Default).
-  `-l LINES, --lines LINES` Enter the number of lines from the file to cycle through (Default is 50)
-  `-p PATH, --path PATH`  Input the directory path that you want to recursively search through, e.g. /var (Default is /)
-  `-e EXTENSIONS [EXTENSIONS ...], --extensions EXTENSIONS [EXTENSIONS ...]` Input the file extensions that should be searched for, separated by spaces.
-  `-x EXCLUDE_DIR [EXCLUDE_DIR ...], --exclude EXCLUDE_DIR [EXCLUDE_DIR ...]` Input the directories to exclude, separated by spaces. Wildcards can be used, e.g. /var/*
-  `-max MAXSIZE, --max-size MAXSIZE` Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
-  `-min MINSIZE, --min-size MINSIZE` Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
-  `-mount, --scan-mount`  Enable to scan the mounted remote file systems (Default is off.)
-  `-v, --verbose`         Display verbose messages (Warning: output can be huge).
+<br>  `-h, --help`          Show this help message and exit
+<br>  `-o, --output `       Output data to a file instead of the Terminal.
+<br>  `-D DEPTH, --max-depth DEPTH` Enter the max depth that the scanner will search from the given directory (Default is 3).
+<br>  `-d MINDEPTH, --min-depth MINDEPTH` Enter the min depth that the scanner will search from the given directory (No Default).
+<br>  `-l LINES, --lines LINES` Enter the number of lines from the file to cycle through (Default is 50)
+<br>  `-p PATH, --path PATH`  Input the directory path that you want to recursively search through, e.g. /var (Default is /)
+<br>  `-e EXTENSIONS [EXTENSIONS ...], --extensions EXTENSIONS [EXTENSIONS ...]` Input the file extensions that should be searched for, separated by spaces.
+<br>  `-x EXCLUDE_DIR [EXCLUDE_DIR ...], --exclude EXCLUDE_DIR [EXCLUDE_DIR ...]` Input the directories to exclude, separated by spaces. Wildcards can be used, e.g. /var/*
+<br>  `-max MAXSIZE, --max-size MAXSIZE` Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
+<br>  `-min MINSIZE, --min-size MINSIZE` Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
+<br>  `-mount, --scan-mount`  Enable to scan the mounted remote file systems (Default is off.)
+<br>  `-v, --verbose`         Display verbose messages (Warning: output can be huge).
 
 ## Example Output
 `[root@sc ~]# ./cardscan4linux.py -e txt -d 8`
