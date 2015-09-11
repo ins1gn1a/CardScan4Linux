@@ -28,6 +28,7 @@ This script can be used to locally search through stored files for any Credit/De
 <br>`[ Lines per file ]_________50`
 <br>`[ Depth of search ]________8`
 <br>`[ Scan Mounted Dirs ]______False`
+<br>`[ Exclusions ]_____________/var`
 <br>`===================================`
 
 <br>`[*] Starting file-system scan. This may take a while...`
@@ -48,6 +49,5 @@ This script can be used to locally search through stored files for any Credit/De
 
 # To do
 
-* Implement remote scanning
 * Create some sort of progress bar for the 'find' subprocess
 * Party
