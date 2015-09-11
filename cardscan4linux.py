@@ -163,7 +163,9 @@ try:
                                                         print result
 
                 except KeyboardInterrupt:
-                        break
+						break
+                except:
+				        sys.exit(bcolors.FAIL + "[*] " + bcolors.ENDC + "Cannot open file '" + filepath + "'.")
 except:
         sys.exit(bcolors.WARNING + "\r[*] " + bcolors.ENDC + "There are no files that match the search.")
 
