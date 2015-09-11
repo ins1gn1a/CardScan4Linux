@@ -1,8 +1,16 @@
 # CardScan4Linux
 This script can be used to locally search through stored files for any Credit/Debit card details. It is portable and requires no additional Python (built with 2.7 in mind) libraries to operate.
 
-## Basic Usage 
+# Basic Usage 
 `cardscan4linux.py [-h] [-d DEPTH] [-l LINES] [-p PATH] -e EXTENSIONS [EXTENSIONS ...] [-max MAXSIZE] [-min MINSIZE]`
+
+## Remote Scanning via Mounting
+By mounting a remote file system to the local (i.e. where the script will be run) Linux system you can effectively scan the remote host by using the `-mount` command flag when running the tool. By default remote mounted systems are not scanned.
+
+## Excluding Directories
+It is possible to exclude certain directories from being scanned by using the `-x/--exclude` command flag when running the script. Multiple directories can be excluded, which includes the use of wildcards using the asterisk character `*`. An example is as follows: `-x /var */adam/* /tmp`. 
+
+Note: It is not neccessary to include wildcards, however if you are using a child-directory as the exclusions then the wildcards will be necessary either side of the forward slashes.
 
 ## Optional Arguments:
 * `-h, --help` Show this help message and exit
@@ -16,7 +24,6 @@ This script can be used to locally search through stored files for any Credit/De
 * `-min MINSIZE, --min-size MINSIZE` Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
 * `-mount, --scan-mount` Enable to scan the mounted remote file systems (Default is off).
 * `-v, --verbose` Display verbose messages (Warning: output can be huge).
-
 
 # Example Output
 `[root@sc ~]# ./cardscan4linux.py -e txt -d 8`
