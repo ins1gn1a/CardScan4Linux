@@ -16,7 +16,7 @@ It is possible to exclude certain directories from being scanned by using the `-
 Note: It is not neccessary to include wildcards, however if you are using a child-directory as the exclusions then the wildcards will be necessary either side of the forward slashes.
 
 ## Optional Arguments:
-<br>  `-h, --help`          Show this help message and exit
+`-h, --help`          Show this help message and exit
 <br>  `-o, --output `       Output data to a file instead of the Terminal.
 <br>  `-D DEPTH, --max-depth DEPTH` Enter the max depth that the scanner will search from the given directory (Default is 3).
 <br>  `-d MINDEPTH, --min-depth MINDEPTH` Enter the min depth that the scanner will search from the given directory (No Default).
