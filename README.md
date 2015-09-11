@@ -15,6 +15,9 @@ It is possible to exclude certain directories from being scanned by using the `-
 
 Note: It is not neccessary to include wildcards, however if you are using a child-directory as the exclusions then the wildcards will be necessary either side of the forward slashes.
 
+## Min Size / Max Size
+The `-min/--max-size` and `-max/--max-size` command flags are used when performing the file discovery. Specifically each are used to set the minimum and maximum file sizes, respectively, of the files that will be audited for payment card-data.
+
 ## Optional Arguments:
 `-h, --help`          Show this help message and exit
 <br>  `-o, --output `       Output data to a file instead of the Terminal.
