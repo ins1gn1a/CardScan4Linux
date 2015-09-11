@@ -27,6 +27,7 @@ This script can be used to locally search through stored files for any Credit/De
 <br>`[ Extensions ] ['txt']`
 <br>`[ Lines per file ] 50`
 <br>`[ Depth of search ] 8`
+<br>`[ Scan Mounted Dirs ]   False`
 <br>`===================================`
 
 <br>`[*] Starting file-system scan. This may take a while...`
