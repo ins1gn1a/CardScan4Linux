@@ -38,6 +38,7 @@ p.add_argument('-d','--min-depth',dest='mindepth',help='Enter the min depth that
 p.add_argument('-l','--lines',dest='lines',help='Enter the number of lines from the file to cycle through (Default is 50)',type=int,default=50)
 p.add_argument('-p','--path',help='Input the directory path that you want to recursively search through, e.g. /var (Default is /)',default='/')
 p.add_argument('-e','--extensions',dest='extensions',help='Input the file extensions that should be searched for, separated by spaces.',required=True,nargs='+')
+p.add_argument('-x','--exclude',dest='exclude_dir',help='Input the directories to exclude, separated by spaces. Wildcards can be used, e.g. /var/*',required=False,nargs='+',default="")
 p.add_argument('-max','--max-size',help='Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="maxsize",default="100k")
 p.add_argument('-min','--min-size',help='Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes',dest="minsize",default="16c")
 p.add_argument('-mount','--scan-mount',dest='mounted',help='Enable to scan the mounted remote file systems (Default is off.)',required=False,action='store_true')
@@ -59,23 +60,19 @@ for ext in a.extensions:
 max = ("-size -" + a.maxsize) # Default 100 Kilobytes (100k)
 min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 
-# Exclude files (remote mounted files) that manage to sneak through the find -type f.
-#y = 0
-#exclCmd = ""
-#exclList = ""
-#os.system("df -h | grep : | cut -d '%' -f 2 | cut -d ' ' -f 2 > /tmp/cardscan4linux.exclude  2> /dev/null")
-#exclude_lines = sum(1 for line in open('/tmp/cardscan4linux.exclude'))
-#with open("/tmp/cardscan4linux.exclude","r") as exclude_file:
-#        if exclude_lines > 1:
-#                for exclude in exclude_file:
-#                        if y == 0:
-#                                exclCmd = ' \( ! -path "%s/*"' %(str(exclude.rstrip("\n")))
-#                                exclList = (str(exclude.rstrip("\n")))
-#                                y += 1
-#                        else:
-#                                exclCmd = (exclCmd + (' -o ! -path "%s/*"' %(str(exclude.rstrip("\n")))))
-#                                exclList = exclList + " " + (str(exclude.rstrip("\n")))
-#                exclCmd = (exclCmd + " \)")
+# Exclude files via -x/--exclude
+y = 0
+exclude_cmd = ""
+for excl in a.exclude_dir:
+        if y == 0:
+                exclude_cmd = " ! -path '%s/*'" %(excl)
+                y += 1
+        else:
+                exclude_cmd = exclude_cmd + (" -a ! -path '%s/*'" %(excl))
+                y += 1
+				
+if y > 0:
+	exclude_cmd = exclude_cmd + " "
 
 # Output to stdout
 if len(a.extensions) > 3:
@@ -90,9 +87,11 @@ print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Extensions \t\t" + bcolors.HEAD
 print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Lines per file \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.lines))
 print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Depth of search \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.depth))
 print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Scan Mounted Dirs \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.mounted))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Exclusions \t\t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.exclude_dir))
 print (bcolors.HEADER + header_line + bcolors.ENDC)
 print (bcolors.OKGREEN + "\n[*] " + bcolors.ENDC + "Starting file-system scan. This may take a while...")
 start_time = timeit.default_timer()
+
 # Local or Remote Mounting
 if a.mounted:
     remote_mount = ""
@@ -104,16 +103,16 @@ if a.mindepth is None:
     min_depth = ""
 else:
     min_depth = "-mindepth %s " %(str(a.mindepth))
-
-# Create a list of all files with the provided extensions
+	
+print ('find %s %s-maxdepth %s %s-type f \( %s %s\) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,exclude_cmd,max,min))
+# Create a list of all files with the provided inputs
 try:
-        full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,max,min), shell=True)
+        full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s %s\) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,exclude_cmd,max,min), shell=True)
         full_path_list = full_path_list.rstrip().split('\n')
 except:
         sys.exit(bcolors.FAIL + "[*] " + bcolors.ENDC + "Cannot retrieve file list - Likely too many symbolic links.")
 
 # Count how many entries in the list file
-# deprecated  file_lines = sum(1 for count_lines in open('/tmp/cardscan4linux.list'))
 file_lines = len(full_path_list)
 
 # Output to user
