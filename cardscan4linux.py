@@ -11,7 +11,7 @@
 # in mind. Nevertheless, you've been told!
 
 # Modules
-import timeit, os, sys,
+import timeit
 import re
 import os
 import sys
