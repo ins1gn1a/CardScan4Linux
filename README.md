@@ -1,8 +1,11 @@
 # CardScan4Linux
 This script can be used to locally search through stored files for any Credit/Debit card details. It is portable and requires no additional Python (built with 2.7 in mind) libraries to operate.
 
-# Basic Usage 
-`cardscan4linux.py [-h] [-d DEPTH] [-l LINES] [-p PATH] -e EXTENSIONS [EXTENSIONS ...] [-max MAXSIZE] [-min MINSIZE]`
+## Basic Usage 
+`cardscan4linux.py [-h] [-o] [-D DEPTH] [-d MINDEPTH] [-l LINES] [-p PATH] -e EXTENSIONS [EXTENSIONS ...] [-x EXCLUDE_DIR [EXCLUDE_DIR ...]] [-max MAXSIZE] [-min MINSIZE] [-mount] [-v]`
+
+## Scan Depth
+The `-d` and `-D` command flags are used to specify the minimum scan depth, and also the maximum scan depth. This is useful for instances where too many symlinked directories result in `find` errors.
 
 ## Remote Scanning via Mounting
 By mounting a remote file system to the local (i.e. where the script will be run) Linux system you can effectively scan the remote host by using the `-mount` command flag when running the tool. By default remote mounted systems are not scanned.
@@ -13,19 +16,20 @@ It is possible to exclude certain directories from being scanned by using the `-
 Note: It is not neccessary to include wildcards, however if you are using a child-directory as the exclusions then the wildcards will be necessary either side of the forward slashes.
 
 ## Optional Arguments:
-* `-h, --help` Show this help message and exit
-* `-o, --output` Output data to a file instead of the Terminal.
-* `-d DEPTH, --max-depth DEPTH` Enter the max depth that the scanner will go to from the root "/" directory (Default is 3).
-* `  -d MINDEPTH, --min-depth MINDEPTH` Enter the min depth that the scanner will search from the given directory (No Default).
-* `-l LINES, --lines LINES` Enter the number of lines to cycle through (Default is 50)
-* `-p PATH, --path PATH`  Input the root-file path that you want to recursively search through, e.g. /var (Default is /)
-* `-e EXTENSIONS [EXTENSIONS ...], --extensions EXTENSIONS [EXTENSIONS ...]` Input the file extensions that should be searched for.
-* `-max MAXSIZE, --max-size MAXSIZE` Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
-* `-min MINSIZE, --min-size MINSIZE` Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
-* `-mount, --scan-mount` Enable to scan the mounted remote file systems (Default is off).
-* `-v, --verbose` Display verbose messages (Warning: output can be huge).
+  `-h, --help`          Show this help message and exit
+  `-o, --output `       Output data to a file instead of the Terminal.
+  `-D DEPTH, --max-depth DEPTH` Enter the max depth that the scanner will search from the given directory (Default is 3).
+  `-d MINDEPTH, --min-depth MINDEPTH` Enter the min depth that the scanner will search from the given directory (No Default).
+  `-l LINES, --lines LINES` Enter the number of lines from the file to cycle through (Default is 50)
+  `-p PATH, --path PATH`  Input the directory path that you want to recursively search through, e.g. /var (Default is /)
+  `-e EXTENSIONS [EXTENSIONS ...], --extensions EXTENSIONS [EXTENSIONS ...]` Input the file extensions that should be searched for, separated by spaces.
+  `-x EXCLUDE_DIR [EXCLUDE_DIR ...], --exclude EXCLUDE_DIR [EXCLUDE_DIR ...]` Input the directories to exclude, separated by spaces. Wildcards can be used, e.g. /var/*
+  `-max MAXSIZE, --max-size MAXSIZE` Enter the maximum file-size to search for (Default 100 Kilobytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
+  `-min MINSIZE, --min-size MINSIZE` Enter the minimum file-size to search for (Default 16 Bytes). Units: "c" for bytes, "k" for Kilobytes, "M" for Megabytes
+  `-mount, --scan-mount`  Enable to scan the mounted remote file systems (Default is off.)
+  `-v, --verbose`         Display verbose messages (Warning: output can be huge).
 
-# Example Output
+## Example Output
 `[root@sc ~]# ./cardscan4linux.py -e txt -d 8`
 <br>`===================================`
 <br>`[ Root Path ]______________/`
