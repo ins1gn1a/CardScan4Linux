@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Version: 1.1.0
+# Version: 1.0.0
 # Author: Adam Govier (ins1gn1a) - September 2015
 # Email: me@ins1gn1a.com
 #
@@ -73,6 +73,9 @@ for excl in a.exclude_dir:
 				
 if y > 0:
 	exclude_cmd = exclude_cmd + " "
+	header_exclusions = a.exclude_dir
+else:
+	header_exclusions = "None"
 
 # Output to stdout
 if len(a.extensions) > 3:
@@ -87,7 +90,7 @@ print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Extensions \t\t" + bcolors.HEAD
 print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Lines per file \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.lines))
 print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Depth of search \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.depth))
 print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Scan Mounted Dirs \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.mounted))
-print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Exclusions \t\t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.exclude_dir))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Exclusions \t\t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(header_exclusions))
 print (bcolors.HEADER + header_line + bcolors.ENDC)
 print (bcolors.OKGREEN + "\n[*] " + bcolors.ENDC + "Starting file-system scan. This may take a while...")
 start_time = timeit.default_timer()
