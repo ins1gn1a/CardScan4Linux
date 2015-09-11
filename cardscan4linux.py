@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Version: 1.0.0
+# Version: 1.1.0
 # Author: Adam Govier (ins1gn1a) - September 2015
 # Email: me@ins1gn1a.com
 #
