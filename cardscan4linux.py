@@ -1,7 +1,17 @@
 #!/usr/bin/env python
 
+# Version: 1.0.0
+# Author: Adam Govier (ins1gn1a) - September 2015
+# Email: me@ins1gn1a.com
+#
+# Disclaimer:
+# I am not responsible for any problems or issues that are potentially caused 
+# by running this tool. There should not be any problems as this script uses
+# in-built functionality and was created with performance and availability 
+# in mind. Nevertheless, you've been told!
+
 # Modules
-import timeit
+import timeit, os, sys,
 import re
 import os
 import sys
