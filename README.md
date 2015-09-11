@@ -7,16 +7,38 @@ This script can be used to locally search through stored files for any Credit/De
 ## Scan Depth
 The `-d` and `-D` command flags are used to specify the minimum scan depth, and also the maximum scan depth. This is useful for instances where too many symlinked directories result in `find` errors.
 
+Default Min: 0
+Default Max: 3
+
 ## Remote Scanning via Mounting
 By mounting a remote file system to the local (i.e. where the script will be run) Linux system you can effectively scan the remote host by using the `-mount` command flag when running the tool. By default remote mounted systems are not scanned.
+
+Default: False (Off)
 
 ## Excluding Directories
 It is possible to exclude certain directories from being scanned by using the `-x/--exclude` command flag when running the script. Multiple directories can be excluded, which includes the use of wildcards using the asterisk character `*`. An example is as follows: `-x /var */adam/* /tmp`. 
 
 Note: It is not neccessary to include wildcards, however if you are using a child-directory as the exclusions then the wildcards will be necessary either side of the forward slashes.
 
+Default: NONE
+
 ## Min Size / Max Size
 The `-min/--max-size` and `-max/--max-size` command flags are used when performing the file discovery. Specifically each are used to set the minimum and maximum file sizes, respectively, of the files that will be audited for payment card-data.
+
+Sizes are denoted within 'bytes', c = bytes, k = Kilobytes, M = Megabytes, G = Gigabytes
+
+Default Min: 16c
+Default Max: 100k
+
+## Extensions
+To specify the targeted file-extensions use the `-e/--extensions` command flag, with one or more extension types separated by spaces. For example: `-e txt doc xlsx csv`. There is no limit to the amount of extensions that can be used for the search, however bear in mind that the more extensions that are specified then the longer the scan could possibly take to complete. Be weary whilst scaning file-storage servers.
+
+Default: NONE
+
+## Max Number of Lines to Audit
+By default the maximum number of lines that will be audited within each file will be '50'. Specifying more will perform a more thorough scan for card data, but more resources will be used and the total scan time will increase. Example: `-l 250`
+
+Default: 50
 
 ## Optional Arguments:
 `-h, --help`          Show this help message and exit
