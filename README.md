@@ -21,13 +21,13 @@ This script can be used to locally search through stored files for any Credit/De
 # Example Output
 `[root@sc ~]# ./cardscan4linux.py -e txt -d 8`
 <br>`===================================`
-<br>`[ Root Path ] 							/`
-<br>`[ Max Size ] 							100k`
-<br>`[ Min Size ] 							16c`
-<br>`[ Extensions ] 						['txt']`
-<br>`[ Lines per file ] 				50`
-<br>`[ Depth of search ] 				8`
-<br>`[ Scan Mounted Dirs ]			False`
+<br>`[ Root Path ]______________/`
+<br>`[ Max Size ]_______________100k`
+<br>`[ Min Size ]_______________16c`
+<br>`[ Extensions ]_____________['txt']`
+<br>`[ Lines per file ]_________50`
+<br>`[ Depth of search ]________8`
+<br>`[ Scan Mounted Dirs ]______False`
 <br>`===================================`
 
 <br>`[*] Starting file-system scan. This may take a while...`
