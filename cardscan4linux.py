@@ -81,8 +81,11 @@ else:
     min_depth = "-mindepth %s " %(str(a.mindepth))
 
 # Create a list of all files with the provided extensions
-full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,max,min), shell=True)
-full_path_list = full_path_list.rstrip().split('\n')
+try:
+        full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,max,min), shell=True)
+        full_path_list = full_path_list.rstrip().split('\n')
+except:
+        sys.exit("[*] Cannot retrieve file list - Likely too many symbolic links.")
 
 # Count how many entries in the list file
 # deprecated  file_lines = sum(1 for count_lines in open('/tmp/cardscan4linux.list'))
@@ -110,45 +113,45 @@ try:
                                 total_count += 1
                                 with open('/tmp/cardscan4linux.log', 'w') as log_file:
                                         log_file.write(str(file_lines) + "/" + str(total_count) + "\n")
-                
+
                                 i = 0
                                 results = []
                                 head = list(islice(file, a.lines)) # Opens 50 lines by default
-                
+
                                 # Loops through each item in list
                                 for item in head:
                                         # Prints if matches AMEX
                                         if re.match(regexAmex, item.rstrip('\n')):
                                                 i += 1
                                                 results.append("\tAMEX:\t\t " + item.rstrip('\n'))
-        
-        
+
+
                                         # Prints if matches VISA
                                         elif re.match(regexVisa, item.rstrip('\n')):
                                                 i += 1
                                                 results.append("\tVISA:\t\t " + item.rstrip('\n'))
-                
+
                                         # Prints if matches Mastercard
                                         elif re.match(regexMaster, item.rstrip('\n')):
                                                 i += 1
                                                 results.append("\tMASTERCARD:\t " + item.rstrip('\n'))
-                
+
                                 if i > 0:
-					if a.output:
-						with open('cardscan.output', "a") as outfile:
-							outfile.write("File: " + filepath + "\n")
-							for result in results:
-								outfile.write(result + "\n")
-					else:
-                                        	print ("\nFile: " + filepath)
-                                        	for result in results:
-                                        	        print result
-						
+                                        if a.output:
+                                                with open('cardscan.output', "a") as outfile:
+                                                        outfile.write("File: " + filepath + "\n")
+                                                        for result in results:
+                                                                outfile.write(result + "\n")
+                                        else:
+                                                print ("\nFile: " + filepath)
+                                                for result in results:
+                                                        print result
+
                 except KeyboardInterrupt:
                         break
 except:
         sys.exit("\r[*] There are no files that match the search.")
-        
+
 # Removes the temp file
 try:
         os.remove("/tmp/cardscan4linux.log")
@@ -159,4 +162,4 @@ total_time = int(timeit.default_timer()) - int(start_time)
 # End of file
 print ("[*] Card scanning complete. " + str(file_lines) + " total files were scanned in " + str(total_time) + " seconds.")
 if a.output:
-	print ("[*] Output saved to " + (os.path.dirname(os.path.realpath(__file__))) + "/cardscan.output.")
+        print ("[*] Output saved to " + (os.path.dirname(os.path.realpath(__file__))) + "/cardscan.output.")
