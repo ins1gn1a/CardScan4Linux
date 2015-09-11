@@ -9,6 +9,17 @@ import argparse
 import subprocess
 from itertools import islice
 
+# Colouring!
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 # Input argument setup
 p = argparse.ArgumentParser(description='Search Linux-based systems for Credit/Debiit Card numbers.')
 p.add_argument('-o','--output',dest='output',help='Output data to a file instead of the Terminal.',action='store_true')
@@ -57,16 +68,20 @@ min = ("-size +" + a.minsize) # Default 16 bytes (16 c)
 #                exclCmd = (exclCmd + " \)")
 
 # Output to stdout
-print ("=========================================================")
-print ("[ Root Path ] \t\t" + str(a.path))
-print ("[ Max Size ] \t\t" + str(a.maxsize))
-print ("[ Min Size ] \t\t" + str(a.minsize))
-print ("[ Extensions ] \t\t" + str(a.extensions))
-print ("[ Lines per file ] \t" + str(a.lines))
-print ("[ Depth of search ] \t" + str(a.depth))
-print ("[ Scan Mounted Dirs ] \t" + str(a.mounted))
-print ("=========================================================")
-print ("\n[*] Starting file-system scan. This may take a while...")
+if len(a.extensions) > 3:
+	header_line = "=============================================================================="
+else:
+	header_line = "========================================================="
+print (bcolors.HEADER + header_line)
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Root Path \t\t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.path))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Max Size \t\t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.maxsize))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Min Size \t\t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.minsize))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Extensions \t\t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.extensions))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Lines per file \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.lines))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Depth of search \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.depth))
+print (bcolors.HEADER + "[*]" + bcolors.ENDC + " Scan Mounted Dirs \t" + bcolors.HEADER + ":\t" + bcolors.ENDC + str(a.mounted))
+print (bcolors.HEADER + header_line + bcolors.ENDC)
+print (bcolors.OKGREEN + "\n[*] " + bcolors.ENDC + "Starting file-system scan. This may take a while...")
 start_time = timeit.default_timer()
 # Local or Remote Mounting
 if a.mounted:
@@ -85,14 +100,14 @@ try:
         full_path_list = subprocess.check_output('find %s %s-maxdepth %s %s-type f \( %s \) %s %s ' %(a.path,remote_mount,a.depth,min_depth,extCmd,max,min), shell=True)
         full_path_list = full_path_list.rstrip().split('\n')
 except:
-        sys.exit("[*] Cannot retrieve file list - Likely too many symbolic links.")
+        sys.exit(bcolors.FAIL + "[*] " + bcolors.ENDC + "Cannot retrieve file list - Likely too many symbolic links.")
 
 # Count how many entries in the list file
 # deprecated  file_lines = sum(1 for count_lines in open('/tmp/cardscan4linux.list'))
 file_lines = len(full_path_list)
 
 # Output to user
-print ("[*] File-system search complete. " + str(file_lines) + " files to check for card-data.")
+print (bcolors.OKGREEN + "[*] " + bcolors.ENDC + "File-system search complete. " + str(file_lines) + " files to check for card-data.")
 
 # Regex to filter card numbers
 regexAmex = re.compile("([^0-9-]|^)(3(4[0-9]{2}|7[0-9]{2})( |-|)[0-9]{6}( |-|)[0-9]{5})([^0-9-]|$)") #16 Digit AMEX
@@ -123,18 +138,18 @@ try:
                                         # Prints if matches AMEX
                                         if re.match(regexAmex, item.rstrip('\n')):
                                                 i += 1
-                                                results.append("\tAMEX:\t\t " + item.rstrip('\n'))
+                                                results.append("\tAMEX:\t\t " + bcolors.FAIL + item.rstrip('\n') + bcolors.ENDC)
 
 
                                         # Prints if matches VISA
                                         elif re.match(regexVisa, item.rstrip('\n')):
                                                 i += 1
-                                                results.append("\tVISA:\t\t " + item.rstrip('\n'))
+                                                results.append("\tVISA:\t\t "  + bcolors.FAIL + item.rstrip('\n') + bcolors.ENDC)
 
                                         # Prints if matches Mastercard
                                         elif re.match(regexMaster, item.rstrip('\n')):
                                                 i += 1
-                                                results.append("\tMASTERCARD:\t " + item.rstrip('\n'))
+                                                results.append("\tMASTERCARD:\t " + bcolors.FAIL + item.rstrip('\n') + bcolors.ENDC)
 
                                 if i > 0:
                                         if a.output:
@@ -150,7 +165,7 @@ try:
                 except KeyboardInterrupt:
                         break
 except:
-        sys.exit("\r[*] There are no files that match the search.")
+        sys.exit(bcolors.WARNING + "\r[*] " + bcolors.ENDC + "There are no files that match the search.")
 
 # Removes the temp file
 try:
@@ -160,6 +175,6 @@ except OSError:
 
 total_time = int(timeit.default_timer()) - int(start_time)
 # End of file
-print ("[*] Card scanning complete. " + str(file_lines) + " total files were scanned in " + str(total_time) + " seconds.")
+print (bcolors.OKGREEN + "[*] " + bcolors.ENDC + "Card scanning complete. " + str(file_lines) + " total files were scanned in " + str(total_time) + " seconds.")
 if a.output:
-        print ("[*] Output saved to " + (os.path.dirname(os.path.realpath(__file__))) + "/cardscan.output.")
+        print (bcolors.OKGREEN + "[*] " + bcolors.ENDC + "Output saved to " + (os.path.dirname(os.path.realpath(__file__))) + "/cardscan.output.")
