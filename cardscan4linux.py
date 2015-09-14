@@ -146,21 +146,24 @@ try:
 
                                 # Loops through each item in list
                                 for item in head:
-                                        # Prints if matches AMEX
-                                        if re.match(regexAmex, item.rstrip('\n')):
-                                                i += 1
-                                                results.append("\tAMEX:\t\t " + bcolors.FAIL + item.rstrip('\n') + bcolors.ENDC)
+					amex = re.search(regexAmex, item.rstrip('\n'))
+					visa = re.search(regexVisa, item.rstrip('\n'))
+					master = re.search(regexMaster, item.rstrip('\n'))
 
+                                        # Prints if matches AMEX
+                                        if amex:
+                                                i += 1
+                                                results.append("\tAMEX:\t\t " + bcolors.FAIL + amex.group().replace(',','').strip() + bcolors.ENDC)
 
                                         # Prints if matches VISA
-                                        elif re.match(regexVisa, item.rstrip('\n')):
+                                        elif visa:
                                                 i += 1
-                                                results.append("\tVISA:\t\t "  + bcolors.FAIL + item.rstrip('\n') + bcolors.ENDC)
+                                                results.append("\tVISA:\t\t "  + bcolors.FAIL + visa.group().replace(',','').strip() + bcolors.ENDC)
 
                                         # Prints if matches Mastercard
-                                        elif re.match(regexMaster, item.rstrip('\n')):
+                                        elif master:
                                                 i += 1
-                                                results.append("\tMASTERCARD:\t " + bcolors.FAIL + item.rstrip('\n') + bcolors.ENDC)
+                                                results.append("\tMASTERCARD:\t " + bcolors.FAIL + master.group().replace(',','').strip() + bcolors.ENDC)
 
                                 if i > 0:
                                         if a.output:
