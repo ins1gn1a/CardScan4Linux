@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Version: 1.0.0
+# Version: 1.1.0
 # Author: Adam Govier (ins1gn1a) - September 2015
 # Email: me@ins1gn1a.com
 #
@@ -44,6 +44,15 @@ p.add_argument('-min','--min-size',help='Enter the minimum file-size to search f
 p.add_argument('-mount','--scan-mount',dest='mounted',help='Enable to scan the mounted remote file systems (Default is off.)',required=False,action='store_true')
 p.add_argument('-v','--verbose',dest='verbose',help='Display verbose messages (Warning: output can be huge).',required=False,action='store_true')
 a = p.parse_args()
+
+# Banner
+print "----------------------------------------------------------------------------"
+print "  ____              _ ____                  _  _   _     _           "
+print " / ___|__ _ _ __ __| / ___|  ___ __ _ _ __ | || | | |   (_)_ __  _   ___  __"
+print "| |   / _` | '__/ _` \___ \ / __/ _` | '_ \| || |_| |   | | '_ \| | | \ \/ /"
+print "| |__| (_| | | | (_| |___) | (_| (_| | | | |__   _| |___| | | | | |_| |>  <"
+print " \____\__,_|_|  \__,_|____/ \___\__,_|_| |_|  |_| |_____|_|_| |_|\__,_/_/\_\ "
+print "----------------------------------------------------------- Version 1.1.0 --"
 
 # String concatenation for file extension searching.
 extCmd = ""
