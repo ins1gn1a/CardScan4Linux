@@ -1,4 +1,6 @@
 # CardScan4Linux
+![](https://img.shields.io/maintenance/yes/2015.svg)
+
 This script can be used to locally search through stored files for any Credit/Debit card details. It is portable and requires no additional Python (built with 2.7 in mind) libraries to operate.
 
 ## Basic Usage 
